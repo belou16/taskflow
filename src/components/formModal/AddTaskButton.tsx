@@ -10,7 +10,7 @@ export default function AddTaskButton() {
         ) as HTMLDialogElement)!.showModal()
       }
     >
-      Ajouter une tache
+      S'ajouter une tache
     </button>
   );
 }
