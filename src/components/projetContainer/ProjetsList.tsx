@@ -4,13 +4,6 @@ import { useState } from "react";
 import ProjectContainer from "./ProjetContainer";
 import ProjetModalInformation from "./ProjectModalInformation";
 
-type Tache = {
-  titre: string;
-  date_limite: string;
-  priorite: string;
-  status: string;
-};
-
 type Projet = {
   id_projet: number;
   titre: string;
@@ -18,7 +11,6 @@ type Projet = {
   status: string;
   date_creation: string | null;
   date_modification: string | null;
-  taches: Tache[];
 };
 
 export default function ProjetsList({ projets }: { projets: Projet[] }) {
@@ -38,7 +30,7 @@ export default function ProjetsList({ projets }: { projets: Projet[] }) {
           key={projet.id_projet}
           title={projet.titre}
           status={projet.status}
-          task={projet.taches}
+          task={[]}
           onInfoClick={() => openInfo(projet)}
         />
       ))}
