@@ -39,7 +39,7 @@ export default async function ProjectDetailPage({ params }: Params) {
     <>
       <h1 className="text-2xl font-bold p-5">{projet.titre}</h1>
 
-      <AddTaskButton />
+      <AddTaskButton projetId={projetId} />
 
       <div className="grid grid-cols-3 h-full int">
         <div className="bg-base-300 rounded-xl p-2 m-5">

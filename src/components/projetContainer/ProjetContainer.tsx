@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import ProjetModalInformation from "./ProjectModalInformation";
+import AddTaskButton from "../formModal/AddTaskButton";
+import ModalTaskForm from "../formModal/ModalFormTask";
 import { ProjectType, TaskType } from "../utils/typeModel";
 
 type Props = {
@@ -68,7 +70,10 @@ export default function ProjectContainer({ project, task }: Props) {
         </table>
       </div>
 
+      <AddTaskButton projetId={project.id} />
+
       <ProjetModalInformation project={project} />
+      <ModalTaskForm projetId={project.id} />
     </div>
   );
 }
