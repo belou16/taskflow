@@ -1,6 +1,46 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
+
 export default function ModalTaskForm() {
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError("");
+
+    const form = event.currentTarget;
+    const titre = (form.elements.namedItem("nameTask") as HTMLInputElement)
+      .value;
+    const date_limite = (
+      form.elements.namedItem("limitDate") as HTMLInputElement
+    ).value;
+    const priorite = (form.elements.namedItem("priority") as HTMLSelectElement)
+      .value;
+
+    const response = await fetch("/api/taches", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        titre: titre,
+        date_limite: date_limite,
+        priorite: priorite,
+        status: "a venir",
+      }),
+    });
+
+    if (!response.ok) {
+      setError("Erreur lors de la création de la tache");
+      return;
+    }
+
+    form.reset();
+    (document.getElementById("modalTaskForm") as HTMLDialogElement).close();
+    router.refresh();
+  }
+
   return (
     <dialog id="modalTaskForm" className="modal modal-bottom sm:modal-middle">
       <div className="modal-box">
@@ -16,11 +56,12 @@ export default function ModalTaskForm() {
           </div>
         </div>
 
-        <form className="p-4">
+        <form className="p-4" onSubmit={handleSubmit}>
           <fieldset className="fieldset">
             <label className="label">Nom de la tache</label>
             <input
               id="nameTask"
+              name="nameTask"
               type="text"
               className="input validator"
               placeholder="Nom de la tache"
@@ -34,6 +75,7 @@ export default function ModalTaskForm() {
               <span className="label">Date limite</span>
               <input
                 id="limitDate"
+                name="limitDate"
                 type="date"
                 className="input validator"
                 required
@@ -50,16 +92,21 @@ export default function ModalTaskForm() {
                 name="priority"
                 id="priority"
                 className="select"
-                defaultValue="choix de la priorité"
+                defaultValue=""
+                required
               >
-                <option disabled={true}>choix de la priorité</option>
+                <option value="" disabled={true}>
+                  choix de la priorité
+                </option>
                 <option value="basse">Basse</option>
-                <option value="basse">Normal</option>
-                <option value="basse">Haute</option>
+                <option value="normale">Normal</option>
+                <option value="haute">Haute</option>
               </select>
               <span className="validator-hint hidden">Required</span>
             </label>
           </fieldset>
+
+          {error && <p className="text-error mt-2">{error}</p>}
 
           <button className="btn btn-neutral mt-4" type="submit">
             Creer

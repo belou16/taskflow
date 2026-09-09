@@ -1,57 +1,55 @@
-"use server";
-
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../db/prisma";
 
-// Récupérer tous les projets
+// Récupérer toutes les taches
 export async function GET() {
   try {
-    const projets = await prisma.pROJET.findMany({
-      orderBy: { date_creation: "desc" },
+    const taches = await prisma.tACHES.findMany({
+      orderBy: { date_limite: "asc" },
     });
 
-    return NextResponse.json(projets);
+    return NextResponse.json(taches);
   } catch (error) {
     console.log(error);
     return NextResponse.json(
-      { error: "Erreur lors de la récupération des projets" },
+      { error: "Erreur lors de la récupération des taches" },
       { status: 500 },
     );
   }
 }
 
-// Créer un nouveau projet
+// Créer une nouvelle tache
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
     const titre = body.titre;
-    const description = body.description;
+    const date_limite = body.date_limite;
+    const priorite = body.priorite;
     const status = body.status;
 
     // On vérifie que tous les champs sont bien remplis
-    if (!titre || !description || !status) {
+    if (!titre || !date_limite || !priorite || !status) {
       return NextResponse.json(
-        { error: "titre, description et status sont requis" },
+        { error: "titre, date_limite, priorite et status sont requis" },
         { status: 400 },
       );
     }
 
-    const nouveauProjet = await prisma.pROJET.create({
+    const nouvelleTache = await prisma.tACHES.create({
       data: {
         titre: titre,
-        description: description,
+        date_limite: new Date(date_limite),
+        priorite: priorite,
         status: status,
-        date_creation: new Date(),
-        date_modification: new Date(),
       },
     });
 
-    return NextResponse.json(nouveauProjet, { status: 201 });
+    return NextResponse.json(nouvelleTache, { status: 201 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
-      { error: "Erreur lors de la création du projet" },
+      { error: "Erreur lors de la création de la tache" },
       { status: 500 },
     );
   }

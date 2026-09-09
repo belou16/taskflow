@@ -15,11 +15,6 @@ export default function ProjetModalInformation({
   dateModification,
   status = "Erreur status manquant",
 }: Props) {
-  title = "Test title";
-  description = "testtttttttttttttttttttttttttttttttttttt";
-  dateCreation = "aujourdhui";
-  dateModification = "demain";
-  status = "a venir";
   return (
     <dialog
       id="projetModalInformation"
@@ -65,5 +60,3 @@ export default function ProjetModalInformation({
     </dialog>
   );
 }
-/**
- */
