@@ -41,12 +41,17 @@ export default function ModalTaskForm({ projetId }: Props) {
     }
 
     form.reset();
-    (document.getElementById("modalTaskForm") as HTMLDialogElement).close();
+    (
+      document.getElementById(`modalTaskForm-${projetId}`) as HTMLDialogElement
+    ).close();
     router.refresh();
   }
 
   return (
-    <dialog id="modalTaskForm" className="modal modal-bottom sm:modal-middle">
+    <dialog
+      id={`modalTaskForm-${projetId}`}
+      className="modal modal-bottom sm:modal-middle"
+    >
       <div className="modal-box">
         <div className="grid grid-cols-[1fr_auto] items-start">
           <div>
