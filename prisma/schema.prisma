@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model contenir {
+  id_tache  Int
+  id_projet Int
+  projet    projet @relation(fields: [id_projet], references: [id_projet], onUpdate: Restrict, map: "CONTENIR_id_projet_FK")
+  taches    taches @relation(fields: [id_tache], references: [id_tache], onUpdate: Restrict, map: "CONTENIR_id_tache_FK")
+
+  @@id([id_tache, id_projet])
+  @@index([id_projet], map: "CONTENIR_id_projet_FK")
+}
+
+model projet {
+  id_projet         Int        @id
+  titre             String     @db.VarChar(50)
+  description       String     @db.VarChar(50)
+  date_creation     DateTime   @db.Date
+  date_modification DateTime   @db.Date
+  status            String     @db.VarChar(50)
+  contenir          contenir[]
+}
+
+model taches {
+  id_tache    Int        @id
+  titre       String     @db.VarChar(50)
+  date_limite DateTime   @db.Date
+  priorite    String     @db.VarChar(50)
+  status      String     @db.VarChar(50)
+  contenir    contenir[]
+}
